@@ -1,0 +1,66 @@
+[simulation]
+  name    = "single_injection_maxwellian"
+  engine  = "srpic"
+  runtime = 5.0    # units of extent (5.0 means light wave propagates 50% of domain)
+
+[grid]
+  resolution = [2048]
+  extent     = [[0.0, 10.0]]
+
+  [grid.metric]
+    metric = "minkowski"
+
+  [grid.boundaries]
+    fields    = [["PERIODIC"]]
+    particles = [["PERIODIC"]]
+
+[scales]
+  larmor0    = 0.1
+  skindepth0 = 0.01
+
+[algorithms]
+  current_filters = 4
+
+  [algorithms.timestep]
+    CFL = 0.5
+
+[particles]
+  ppc0 = 14.0
+
+  [[particles.species]]    # electrons
+    label    = "e-"
+    mass     = 1.0
+    charge   = -1.0
+    maxnpart = 1e7
+
+  [[particles.species]]    # positrons for neutrality
+    label    = "e+"
+    mass     = 1836.0
+    charge   = 1.0
+    maxnpart = 1e7
+
+[setup]
+  temperature      = 0.01
+  drift_ux         = 0.0
+  number_density   = 0.85
+
+  bump_temperature = 0.002
+  bump_drift_ux    = 0.6
+  bump_density     = 0.15
+
+  filling_fraction = 0.25
+
+[output]
+  format        = "BPFile"
+  interval_time = 0.0025
+
+  [output.fields]
+    quantities = ["Charge", "E", "N_1", "N_2"]
+    stride = 1
+
+  [output.particles]
+    species = [1, 2]
+    stride  = 10
+
+[diagnostics]
+  colored_stdout = true
