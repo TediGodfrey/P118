@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#SBATCH --account=epaco
+#SBATCH -J job_name
+#SBATCH --partition=a100
+#SBATCH --gres=gpu:1
+#SBATCH -o ./entity.out
+#SBATCH -e ./entity.err
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=4
+#SBATCH --time=00:20:00
+
+module use --append /dartfs/rc/lab/E/EPaCO/.mods
+module load entity/cuda/mpi/a100
+
+mpirun -np 1 ./entity.xc -input ./cherenkov.toml
